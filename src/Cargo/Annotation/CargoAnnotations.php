@@ -34,3 +34,10 @@ class EventSubscriber extends Annotation
     public $class;
     public $arguments;
 }
+
+/** @Annotation */
+class Form extends Annotation
+{
+    public $type;
+    public $class;
+}

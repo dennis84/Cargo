@@ -26,8 +26,15 @@ use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
  */
 class FormExtension implements ExtensionInterface
 {
+    /**
+     * Registers an extension.
+     *
+     * @param Application $app An appllication instance
+     */
     public function register(Application $app)
     {
+        $this->app = $app;
+
         $app['form.secret'] = md5(__DIR__);
         
         $app['form.factory'] = $app->share(function () use ($app) {

@@ -19,6 +19,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             __DIR__ . '/Fixures/Foo',
             __DIR__ . '/Fixures/Bar',
         ));
+        $this->app->register(new \Cargo\Extension\TwigExtension());
     }
 
     /**
@@ -40,7 +41,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Cargo\Template\Collection\TemplateCollection', $app['templates']);
         $this->assertInstanceOf('\Symfony\Component\Routing\RouteCollection', $app['routes']);
         $this->assertInstanceOf('\Cargo\Template\TemplateResolver', $app['resolver']);
-        $this->assertInstanceOf('\Cargo\Twig\Engine', $app['templating']);
     }
 
     /**
@@ -107,6 +107,22 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $response = $this->app->run(Request::create('http://test.com/foo/route-c'));
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals('Test:Foo:templateC.html.twig', trim($response->getContent()));
+    }
+
+    /**
+     * Tests run the application without a templating engine.
+     *
+     * @expectedException RuntimeException
+     */
+    public function testRunWithNoTemplating()
+    {
+        $app = new Application();
+        $app->registerThemes(array(
+            __DIR__ . '/Fixures/Foo',
+            __DIR__ . '/Fixures/Bar',
+        ));
+
+        $app->run(Request::create('http://test.com/foo/route-a'));
     }
 
     /**

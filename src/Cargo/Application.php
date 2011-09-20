@@ -45,7 +45,7 @@ class Application extends ApplicationContainer implements EventSubscriberInterfa
         $this['template.not_found'] = 'notFound';
 
         $this['autoloader'] = $this->share(function () {
-            $loader = new Symfony\Component\ClassLoader\UniversalClassLoader();
+            $loader = new \Symfony\Component\ClassLoader\UniversalClassLoader();
             $loader->register();
 
             return $loader;
@@ -68,17 +68,6 @@ class Application extends ApplicationContainer implements EventSubscriberInterfa
 
         $this['resolver'] = $this->share(function($c) {
             return new \Cargo\Template\TemplateResolver($c['templates']);
-        });
-
-        $this['templating'] = $this->share(function($c) {
-            $engine = new \Cargo\Twig\Engine($c['templates']->toTwigCollection());
-            if ($c->has('request')) {
-                $engine->addExtension(
-                    new \Cargo\Extension\TwigCoreExtension($c['request'], $c['routes'])
-                );
-            }
-
-            return $engine;
         });
     }
 
@@ -173,6 +162,10 @@ class Application extends ApplicationContainer implements EventSubscriberInterfa
      */
     public function onApplicationResponse(ApplicationEvent $event)
     {
+        if (!$this->has('templating')) {
+            throw new \RuntimeException('The application must have a templating engine');
+        }
+
         $output = $this['templating']->render(
             $event->getTemplate()->getName(),
             $event->getRequest()->attributes->all()

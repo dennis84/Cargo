@@ -65,6 +65,12 @@ class TemplateCompiler
                     $annotation->class,
                     $annotation->arguments
                 );
+
+            } elseif ($annotation instanceof \Cargo\Annotation\Form) {
+                $template->addForm(
+                    $annotation->type,
+                    $annotation->class
+                );
             }
         }
 
