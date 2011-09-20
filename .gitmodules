@@ -1,0 +1,24 @@
+[submodule "vendor/Symfony/Component/ClassLoader"]
+	path = vendor/Symfony/Component/ClassLoader
+	url = git://github.com/symfony/ClassLoader.git
+[submodule "vendor/Symfony/Component/HttpFoundation"]
+	path = vendor/Symfony/Component/HttpFoundation
+	url = git://github.com/symfony/HttpFoundation.git
+[submodule "vendor/Symfony/Component/Routing"]
+	path = vendor/Symfony/Component/Routing
+	url = git://github.com/symfony/Routing.git
+[submodule "vendor/Symfony/Component/Finder"]
+	path = vendor/Symfony/Component/Finder
+	url = git://github.com/symfony/Finder.git
+[submodule "vendor/Symfony/Component/EventDispatcher"]
+	path = vendor/Symfony/Component/EventDispatcher
+	url = git://github.com/symfony/EventDispatcher.git
+[submodule "vendor/pimple"]
+	path = vendor/pimple
+	url = git://github.com/fabpot/Pimple.git
+[submodule "vendor/twig"]
+	path = vendor/twig
+	url = git://github.com/fabpot/Twig.git
+[submodule "vendor/doctrine-common"]
+	path = vendor/doctrine-common
+	url = git://github.com/doctrine/common.git
