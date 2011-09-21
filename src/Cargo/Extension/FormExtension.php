@@ -36,7 +36,7 @@ class FormExtension implements ExtensionInterface
         $this->app = $app;
 
         $app['form.secret'] = md5(__DIR__);
-        
+
         $app['form.factory'] = $app->share(function () use ($app) {
             $extensions = array(
                 new CoreExtension(),

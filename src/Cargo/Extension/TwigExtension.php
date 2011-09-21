@@ -33,8 +33,8 @@ class TwigExtension implements ExtensionInterface
      */
     public function register(Application $app)
     {
-        $app['twig.paths'] = array();
         $app['twig'] = true;
+        $app['twig.paths'] = array();
 
         $app['twig.loader.array'] = $app->share(function($c) use ($app) {
             return new \Twig_Loader_Array(

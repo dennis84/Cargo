@@ -41,19 +41,5 @@ class KnpMenuExtension implements ExtensionInterface
         $app['knp_menu.renderer.list'] = $app->share(function () use ($app){
             return new ListRenderer($app['charset']);
         });
-
-        if (isset($app['twig'])) {
-            if (!isset($app['knp_menu.template'])) {
-                $app['knp_menu.template'] = 'knp_menu.html.twig';
-            }
-
-            $oldLoader = $app->raw('twig.loader.filesystem');
-            $app['twig.loader.filesystem'] = $app->share(function($c) use ($oldLoader, $app) {
-                $loader = $oldLoader($c);
-                $loader->addPath($app['knp_menu.template_path']);
-
-                return $loader;
-            });
-        }
     }
 }

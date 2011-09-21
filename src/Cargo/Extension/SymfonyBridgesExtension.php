@@ -27,10 +27,16 @@ class SymfonyBridgesExtension implements ExtensionInterface
      */
     public function register(Application $app)
     {
+        $bridgePath = $app['symfony_bridges.class_path'];
+
+        $twigPaths   = $app['twig.paths'];
+        $twigPaths[] = $bridgePath . '/Symfony/Bridge/Twig/Resources/views/Form';
+        $app['twig.paths'] = $twigPaths;
+
         $app['symfony_bridges'] = true;
 
         if ($app->has('symfony_bridges.class_path')) {
-            $app['autoloader']->registerNamespace('Symfony\\Bridge', $app['symfony_bridges.class_path']);
+            $app['autoloader']->registerNamespace('Symfony\\Bridge', $bridgePath);
         }
     }
 }
