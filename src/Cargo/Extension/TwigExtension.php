@@ -34,6 +34,7 @@ class TwigExtension implements ExtensionInterface
     public function register(Application $app)
     {
         $app['twig.paths'] = array();
+        $app['twig'] = true;
 
         $app['twig.loader.array'] = $app->share(function($c) use ($app) {
             return new \Twig_Loader_Array(
@@ -62,7 +63,7 @@ class TwigExtension implements ExtensionInterface
                     $app['request'],
                     $app['routes']
                 ));
-                
+
                 $twig->addExtension(new TwigTranslationExtension($app['translator']));
                 $twig->addExtension(new TwigFormExtension(array('form_div_layout.html.twig')));
             }

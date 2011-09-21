@@ -132,22 +132,22 @@ class Application extends ApplicationContainer implements EventSubscriberInterfa
     {
         $request = $event->getRequest();
 
-        $requestContext = new RequestContext(
-            $request->getBaseUrl(),
-            $request->getMethod(),
-            $request->getHost(),
-            $request->getScheme(),
-            !$request->isSecure() ? $request->getPort() : $this['request.http_port'],
-            $request->isSecure() ? $request->getPort() : $this['request.https_port']
+        $this['request_context'] = new RequestContext(
+            $this['request']->getBaseUrl(),
+            $this['request']->getMethod(),
+            $this['request']->getHost(),
+            $this['request']->getScheme(),
+            !$this['request']->isSecure() ? $this['request']->getPort() : $this['request.http_port'],
+            $this['request']->isSecure() ? $this['request']->getPort() : $this['request.https_port']
         );
 
-        $matcher = new RedirectableUrlMatcher($this['routes'], $requestContext);
+        $matcher = new RedirectableUrlMatcher($this['routes'], $this['request_context']);
 
         try {
-            $attributes = $matcher->match($request->getPathInfo());
+            $attributes = $matcher->match($this['request']->getPathInfo());
             $template   = $this['resolver']->resolveByRouteName($attributes['_route']);
 
-            $request->attributes->add($attributes);
+            $this['request']->attributes->add($attributes);
         } catch (RoutingException $error) {
             $template = $this['resolver']->resolveByName($this['template.not_found']);
         }
