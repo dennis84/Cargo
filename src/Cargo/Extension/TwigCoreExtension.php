@@ -64,10 +64,6 @@ class TwigCoreExtension extends \Twig_Extension
      */
     public function getPath($name = null)
     {
-        if (null === $name) {
-            $name = $this->request->attributes->get('_route');
-        }
-
         $route = $this->routes->get($name);
 
         if (null === $route) {
