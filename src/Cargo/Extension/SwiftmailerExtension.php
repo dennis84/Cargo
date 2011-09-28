@@ -83,13 +83,5 @@ class SwiftmailerExtension implements ExtensionInterface
 
             \Swift::registerAutoload($app['swiftmailer.class_path'].'/../swift_init.php');
         }
-        
-        $message = \Swift_Message::newInstance()
-            ->setSubject('[YourSite] Feedback')
-            ->setFrom(array('noreply@yoursite.com'))
-            ->setTo(array('feedback@yoursite.com'))
-            ->setBody('hello');
-
-        $app['mailer']->send($message);
     }
 }
