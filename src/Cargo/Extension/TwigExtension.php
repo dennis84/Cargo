@@ -60,8 +60,7 @@ class TwigExtension implements ExtensionInterface
             $twig->addGlobal('app', $app);
             if ($app->has('symfony_bridges')) {
                 $twig->addExtension(new TwigCoreExtension(
-                    $app['request'],
-                    $app['routes']
+                    $app['url_generator']
                 ));
 
                 $twig->addExtension(new TwigTranslationExtension($app['translator']));

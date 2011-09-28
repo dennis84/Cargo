@@ -13,6 +13,7 @@ namespace Cargo\Extension;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 
 /**
  * TwigCoreExtension.
@@ -22,25 +23,18 @@ use Symfony\Component\Routing\RouteCollection;
 class TwigCoreExtension extends \Twig_Extension
 {
     /**
-     * @var Symfony\Component\HttpFoundation\Request
+     * @var UrlGenerator
      */
-    protected $request;
-
-    /**
-     * @var Symfony\Component\Routing\RouteCollection
-     */
-    protected $routes;
+    protected $generator;
 
     /**
      * Constructor.
      *
-     * @param Request         $request The request
-     * @param RouteCollection $routes  The route collection
+     * @param UrlGenerator $generator The route generator
      */
-    public function __construct(Request $request, RouteCollection $routes)
+    public function __construct(UrlGenerator $generator)
     {
-        $this->request = $request;
-        $this->routes  = $routes;
+        $this->generator = $generator;
     }
 
     /**
@@ -58,21 +52,14 @@ class TwigCoreExtension extends \Twig_Extension
     /**
      * Gets the path of a route by name.
      *
-     * @param string $name The route name
+     * @param string $name       The route name
+     * @param array  $parameters The route parameters
      *
      * @return string
      */
-    public function getPath($name = null)
+    public function getPath($name = null, array $parameters = array())
     {
-        $route = $this->routes->get($name);
-
-        if (null === $route) {
-            throw new \InvalidArgumentException(sprintf(
-                'The route with name "" does not exists.', $name
-            ));
-        }
-
-        return $this->request->getUriForPath($route->getPattern());
+        return $this->generator->generate($name, $parameters);
     }
 
     /**
