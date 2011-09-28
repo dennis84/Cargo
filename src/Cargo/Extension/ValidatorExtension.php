@@ -19,6 +19,8 @@ use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+
 /**
  * ValidatorExtension.
  *
@@ -51,7 +53,15 @@ class ValidatorExtension implements ExtensionInterface
         });
 
         if (isset($app['validator.class_path'])) {
-            $app['autoloader']->registerNamespace('Symfony\\Component\\Validator', $app['validator.class_path']);
+            $app['autoloader']->registerNamespace(
+                'Symfony\\Component\\Validator',
+                $app['validator.class_path']
+            );
         }
+
+        AnnotationRegistry::registerAutoloadNamespace(
+            'Symfony\\Component\\Validator\\Constraint',
+            $app['validator.class_path']
+        );
     }
 }
