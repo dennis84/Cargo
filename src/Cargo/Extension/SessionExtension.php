@@ -52,11 +52,11 @@ class SessionExtension implements ExtensionInterface
 
         $app['dispatcher']->addListener(ApplicationEvents::REQUEST, array($this, 'onApplicationRequest'), 128);
 
-        if ($app->has('session.storage.options')) {
+        if (!isset($app['session.storage.options'])) {
             $app['session.storage.options'] = array();
         }
 
-        if ($app->has('session.default_locale')) {
+        if (!isset($app['session.default_locale'])) {
             $app['session.default_locale'] = 'en';
         }
     }
