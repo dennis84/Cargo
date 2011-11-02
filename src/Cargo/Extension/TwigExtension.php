@@ -35,6 +35,7 @@ class TwigExtension implements ExtensionInterface
     {
         $app['twig'] = true;
         $app['twig.paths'] = array();
+        $app['twig.options'] = isset($app['twig.options']) ? $app['twig.options'] : array();
 
         $app['twig.loader.array'] = $app->share(function($c) use ($app) {
             return new \Twig_Loader_Array(
@@ -56,7 +57,8 @@ class TwigExtension implements ExtensionInterface
         });
 
         $app['templating'] = $app->share(function($c) use($app) {
-            $twig = new \Twig_Environment($app['twig.loader']);
+            $twig = new \Twig_Environment($app['twig.loader'], $app['twig.options']);
+
             $twig->addGlobal('app', $app);
             if ($app->has('symfony_bridges')) {
                 $twig->addExtension(new TwigCoreExtension(
@@ -64,7 +66,7 @@ class TwigExtension implements ExtensionInterface
                 ));
 
                 $twig->addExtension(new TwigTranslationExtension($app['translator']));
-                $twig->addExtension(new TwigFormExtension(array('form_div_layout.html.twig')));
+                $twig->addExtension(new TwigFormExtension(array('form_table_layout.html.twig')));
             }
 
             return $twig;
