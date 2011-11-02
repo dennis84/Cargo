@@ -1,0 +1,57 @@
+<?php
+
+/*
+
+require_once __DIR__.'/../vendor/silex.phar';
+
+use Silex\Application;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\SymfonyBridgesServiceProvider;
+use Cargo\Provider\CargoServiceProvider;
+
+use Cachim\Factory;
+use Cachim\Builder;
+use Cachim\Type\StringType;
+use Cachim\Type\BooleanType;
+use Cachim\Type\NumberType;
+use Cachim\Type\ArrayType;
+use Cachim\Type\ObjectType;
+
+$app = new Application();
+
+$app['autoloader']->registerNamespaces(array(
+    'Cargo'            => __DIR__.'/../src',
+    'Symfony'          => __DIR__.'/../vendor',
+    'Doctrine\\Common' => __DIR__.'/../vendor/doctrine-common/lib',
+    'Cachim'           => __DIR__.'/../vendor/cachim/src',
+));
+
+$app->register(new CargoServiceProvider(), array(
+    'cargo.templating.engine' => 'twig',
+    'cargo.cache_path'        => __DIR__ . '/cache',
+));
+
+$app['cargo']->registerThemes(array(
+    'Acme' => __DIR__.'/../example/theme',
+));
+
+$templates = $app['cargo.templates'];
+
+$types = array(
+    new StringType(),
+    new BooleanType(),
+    new NumberType(),
+    new ArrayType(),
+    new ObjectType(),
+);
+
+$builder = new Builder($types);
+$factory = new Factory($builder);
+
+$out = $factory->create($templates);
+
+file_put_contents(__DIR__.'/../example/cache/templates.php.cache', $out);
+//print_r($templates);
+
+*/

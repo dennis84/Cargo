@@ -1,0 +1,243 @@
+<?php 
+namespace Cargo\Template {
+    
+/**
+ * This is a Cachim generated class.
+ */
+class TemplateCollection_000000005f61ebbe000000000441d8dd {
+    
+    /**
+     * A Cachim generated metod.
+     */
+    public function toTwigCollection() {
+        return array("Error:notFound" => "{#
+
+ This file is part of the cargo framework
+
+ (c) Dennis Dietrich <d.dietrich84@googlemail.com>
+
+ This source file is subject to the MIT license that is bundled
+ with this source code in the file LICENSE.
+
+ @Template(name="Error:notFound")
+
+#}
+
+{% extends "Base:layout" %}
+
+{% block content %}
+    Upps, the requested page was not found.
+{% endblock %}","Acme:Page:foo.html.twig" => "{#
+
+ This file is part of the cargo framework
+
+ (c) Dennis Dietrich <d.dietrich84@googlemail.com>
+
+ This source file is subject to the MIT license that is bundled
+ with this source code in the file LICENSE.
+
+ @Template("Acme:Page:foo.html.twig")
+ @Route("/foo", name="foo")
+
+#}
+
+{% extends "Base:layout" %}
+
+{% block content %}
+    Hello i am the foo template
+    <a href="{{ path("bar") }}">Navigate to bar</a>
+{% endblock %}","Acme:Page:bar.html.twig" => "{#
+
+ This file is part of the cargo framework
+
+ (c) Dennis Dietrich <d.dietrich84@googlemail.com>
+
+ This source file is subject to the MIT license that is bundled
+ with this source code in the file LICENSE.
+
+ @Template(name="Acme:Page:bar.html.twig")
+ @Route("/bar/{name}", name="bar", defaults={"name"="Dennis"})
+
+#}
+
+{% extends "Base:layout" %}
+
+{% block content %}
+    Hello my name is {{ name }}!
+    <a href="{{ path("foo") }}">Navigate to foo</a>
+{% endblock %}
+","Base:layout" => "{#
+
+ This file is part of the cargo framework
+
+ (c) Dennis Dietrich <d.dietrich84@googlemail.com>
+
+ This source file is subject to the MIT license that is bundled
+ with this source code in the file LICENSE.
+
+ @Template(name="Base:layout")
+
+#}
+
+<html>
+    <head>
+        <title>Cargo Example</title>
+    </head>
+
+    <body>
+        {% block content %}{% endblock %}
+    </body>
+</html>",);
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function toArray() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function first() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function last() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function key() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function next() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function current() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function getKeys() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function getValues() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function count() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function isEmpty() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function getIterator() {
+        return "__RECURSIVE__";;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function __toString() {
+        return "__RECURSIVE__";;
+    }
+}
+
+}
+
+
+namespace Cargo\Template {
+    
+/**
+ * This is a Cachim generated class.
+ */
+class Template_000000005f61ebae000000000441d8dd {
+    
+    /**
+     * A Cachim generated metod.
+     */
+    public function getName() {
+        return "Error:notFound";
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function getPath() {
+        return "/media/workspace/cargo-silex/example/theme/Error/notFound.html.twig";
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function hasRoutes() {
+        return false;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function getRoutes() {
+        return array();
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function isCompiled() {
+        return true;
+    }
+
+    /**
+     * A Cachim generated metod.
+     */
+    public function getFile() {
+        return "__RECURSIVE__";;
+    }
+}
+
+}
+
+
+namespace  {
+    
+/**
+ * Gets the access to your main object.
+ *
+ * This is a Cachim generated call.
+ */
+$object = new \Cargo\Template\TemplateCollection_000000005f61ebbe000000000441d8dd();
+}
+
