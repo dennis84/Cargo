@@ -12,6 +12,7 @@
 namespace Cargo\Provider;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Symfony\Component\Routing\RouteCollection;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -19,6 +20,7 @@ use Silex\ServiceProviderInterface;
 use Cargo\Cargo;
 use Cargo\Matcher\TemplateMatcher;
 use Cargo\Matcher\RouteMatcher;
+use Cargo\Matcher\ControllerMatcher;
 use Cargo\Template\TemplateCollection;
 use Cargo\Template\TemplateResolver;
 use Cargo\Template\TemplateCompiler;
@@ -43,17 +45,16 @@ class CargoServiceProvider implements ServiceProviderInterface
             __DIR__ . '/../Annotation/CargoAnnotations.php'
         );
 
-        $app['cargo.templates'] = $app->share(function () use ($app) {
-            if ($data = apc_fetch('templates')) {
-                echo 'apc yo';
-                return $data;
-            }
+        $app['cargo.routes'] = $app->share(function () {
+            return new RouteCollection();
+        });
 
+        $app['cargo.templates'] = $app->share(function () use ($app) {
             return new TemplateCollection();
         });
 
         $app['cargo.matcher.route'] = $app->share(function () use ($app) {
-            return new RouteMatcher($app['routes']);
+            return new RouteMatcher($app['cargo.routes']);
         });
 
         $app['cargo.matcher.template'] = $app->share(function () use ($app) {

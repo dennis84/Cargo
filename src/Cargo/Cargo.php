@@ -15,6 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 use Silex\Application;
 use Silex\SilexEvents;
@@ -43,9 +44,8 @@ class Cargo implements EventSubscriberInterface
      */
     public function __construct(Application $app)
     {
-        $app['dispatcher']->addSubscriber($this);
-
         $this->app = $app;
+        $app['dispatcher']->addSubscriber($this);
     }
 
     /**
@@ -66,6 +66,24 @@ class Cargo implements EventSubscriberInterface
     }
 
     /**
+     * Handles onKernelRequest events.
+     *
+     * Ensure that the cargo routes will pushed to the
+     * Silex Routes. The reason why cargo uses their own collection
+     * is that the silex routes will initialized after running the
+     * application and the priority of silex routes must be higher,
+     * because we enable silex to override the cargo templates.
+     *
+     * @param KernelEvent $event The kernel event
+     */
+    public function onKernelRequest(KernelEvent $event)
+    {
+        $this->app['routes']->addCollection(
+            $this->app['cargo.routes']
+        );
+    }
+
+    /**
      * Handles on silex after.
      *
      * @param FilterResponseEvent $event The kernel event
@@ -74,6 +92,7 @@ class Cargo implements EventSubscriberInterface
     {
         $request  = $event->getRequest();
         $template = $request->get('_template');
+        $route    = $request->get('_route');
 
         if (null === $template) {
             return;
@@ -95,7 +114,8 @@ class Cargo implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            SilexEvents::AFTER => 'onSilexAfter',
+            KernelEvents::REQUEST => array('onKernelRequest', 999),
+            SilexEvents::AFTER  => 'onSilexAfter',
         );
     }
 }

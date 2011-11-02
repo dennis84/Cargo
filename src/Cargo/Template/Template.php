@@ -42,6 +42,11 @@ class Template implements TemplateInterface
     protected $routes = array();
 
     /**
+     * @var mixed
+     */
+    protected $controller;
+
+    /**
      * @var boolean
      */
     protected $compiled = false;
@@ -140,6 +145,26 @@ class Template implements TemplateInterface
     public function getRoutes()
     {
         return $this->routes;
+    }
+
+    /**
+     * Gets the controller.
+     *
+     * @return mixed
+     */
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    /**
+     * Sets the controller.
+     *
+     * @param mixed $controller The controller
+     */
+    public function setController($controller)
+    {
+        $this->controller = $controller;
     }
 
     /**
