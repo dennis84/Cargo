@@ -1,0 +1,34 @@
+{
+    "hash": "2793c2584536f0d2c04988cef08dfcb2",
+    "packages": [
+        {
+            "package": "doctrine/common",
+            "version": "2.2.x-dev",
+            "source-reference": "1e0aa60d109c630d19543d999f12e2852ef8f932"
+        },
+        {
+            "package": "monolog/monolog",
+            "version": "dev-master",
+            "source-reference": "d348b2c2529f8468ba27189b99d4eed247ebac7c"
+        },
+        {
+            "package": "swiftmailer/swiftmailer",
+            "version": "dev-master",
+            "source-reference": "d89cf0d1c9eb980dfb8d37f902265bb504c7bf5e"
+        },
+        {
+            "package": "symfony/symfony",
+            "version": "dev-master",
+            "source-reference": "539634cbaac67e943e9dc51ef8d323c6b1a7525d",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "source-reference": "0add6e23771bf44d8ee643c555597b87ae4a598b",
+            "alias": "1.7.9999999.9999999-dev"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": []
+}
