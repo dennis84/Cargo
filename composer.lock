@@ -1,0 +1,27 @@
+{
+    "hash": "9f2a18176c013488d734e9a0c5cf4303",
+    "packages": [
+        {
+            "package": "doctrine/common",
+            "version": "dev-master",
+            "source-reference": "4f78640efd3c9c5d790acdb99bcc9f9c10a1587a"
+        },
+        {
+            "package": "symfony/finder",
+            "version": "dev-master",
+            "source-reference": "57ec7198a70e6c40e450ba66cc2f8ecab98746c8"
+        },
+        {
+            "package": "symfony/symfony",
+            "version": "dev-charset-fix",
+            "source-reference": "51cbb846df3560a7a82a096865787da316e73be6"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "source-reference": "0add6e23771bf44d8ee643c555597b87ae4a598b"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": []
+}

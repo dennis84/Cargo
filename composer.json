@@ -1,0 +1,22 @@
+{
+    "name": "dennis84/cargo",
+    "description": "The cargo project",
+    "keywords": ["framework"],
+    "homepage": "http://github.com/dennis84/Cargo",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dennis Dietrich",
+            "email": "d.dietrich84@googlemail.com"
+        }
+    ],
+    "require": {
+        "symfony/finder":      "dev-master",
+        "doctrine/common":     "dev-master",
+        "twig/twig":           "dev-master",
+        "symfony/twig-bridge": "2.1.x-dev"
+    },
+    "autoload": {
+        "psr-0": { "": "src/" }
+    }
+}
