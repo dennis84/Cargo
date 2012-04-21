@@ -49,11 +49,31 @@ class Cargo implements EventSubscriberInterface
     }
 
     /**
-     * Registers Theme paths.
+     * Registers the themes if there is no defined cache path then the caching
+     * will not works. If the caching is active then the files will loaded from
+     * the cargo cache loader.
      *
      * @param array $themes The themes to register
      */
     public function registerThemes(array $themes = array())
+    {
+        if (!isset($this->app['cargo.cache_dir'])) {
+            return $this->loadTemplates($themes);
+        }
+
+        $cargo = $this;
+        $this->app['cargo.cache_loader']->load(function () use ($cargo, $themes) {
+            $cargo->loadTemplates($themes);
+        });
+    }
+
+    /**
+     * Loads the templates from filesystem. This method must have public access
+     * to ensure calling from the closure above.
+     *
+     * @param array $themes The theme collection
+     */
+    public function loadTemplates(array $themes)
     {
         $builder = new TemplateBuilder(
             $this->app['cargo.templates'],
@@ -62,7 +82,7 @@ class Cargo implements EventSubscriberInterface
 
         foreach ($themes as $name => $dir) {
             $builder->createTemplatesFromDir($dir);
-        }
+        }   
     }
 
     /**
@@ -98,7 +118,7 @@ class Cargo implements EventSubscriberInterface
             return;
         }
 
-        $output = $this->app['cargo.templating']->render(
+        $output = $this->app['twig']->render(
             $template->getName(),
             $request->attributes->all()
         );
@@ -115,7 +135,7 @@ class Cargo implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => array('onKernelRequest', 999),
-            SilexEvents::AFTER  => 'onSilexAfter',
+            SilexEvents::AFTER    => 'onSilexAfter',
         );
     }
 }

@@ -25,15 +25,21 @@ use Cargo\Template\TemplateCollection;
 use Cargo\Template\TemplateResolver;
 use Cargo\Template\TemplateCompiler;
 
-/**
- * CargoServiceProvider.
+/** 
+ *  CargoServiceProvider.
  *
- * @author Dennis Dietrich <d.dietrich84@googlemail.com>
+ *  @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
 class CargoServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        // Checks if the twig extension is installed else throws an exception.
+        if (!isset($app['twig'])) {
+            throw new \Exception('You must enable twig.');
+        }
+
+        // Registers the cargo annotations.
         $loader = $app['autoloader'];
 
         AnnotationRegistry::registerLoader(function($class) use ($loader) {
@@ -45,14 +51,18 @@ class CargoServiceProvider implements ServiceProviderInterface
             __DIR__ . '/../Annotation/CargoAnnotations.php'
         );
 
+        // Registers the cargo route collection class.
         $app['cargo.routes'] = $app->share(function () {
             return new RouteCollection();
         });
 
+        // Registers the cargo template collection.
         $app['cargo.templates'] = $app->share(function () use ($app) {
             return new TemplateCollection();
         });
 
+        // Registers the template annotation matchers, at the moment is only 
+        // the template and route annotations possible.
         $app['cargo.matcher.route'] = $app->share(function () use ($app) {
             return new RouteMatcher($app['cargo.routes']);
         });
@@ -61,6 +71,7 @@ class CargoServiceProvider implements ServiceProviderInterface
             return new TemplateMatcher();
         });
 
+        // Registers the template compiler service.
         $app['cargo.template.compiler'] = $app->share(function () use ($app) {
             return new TemplateCompiler(array(
                 $app['cargo.matcher.route'],
@@ -68,26 +79,19 @@ class CargoServiceProvider implements ServiceProviderInterface
             ));
         });
 
-        $app['cargo.templating'] = $app->share(function () use ($app) {
-            if (!isset($app['cargo.templating.engine'])) {
-                throw new \InvalidArgumentException('You have to set one templating engine.');
-            }
-
-            if (!isset($app[$app['cargo.templating.engine']])) {
-                throw new \InvalidArgumentException(
-                    'The template engine was never registered in your application.'
-                );
-            }
-
-            return $app[$app['cargo.templating.engine']];
+        // Sets all cargo templates to the twig template collection.
+        $app['twig.templates'] = $app->share(function () use ($app) {
+            return $app['cargo.templates']->toTwigCollection();
+        });
+ 
+        $app['cargo.cache_loader'] = $app->share(function () use ($app) {
+          return new \Cargo\Cache\Loader($app['cargo.cache_dir'], $app['debug'], array(
+            new \Cargo\Cache\RouteCacheHandler($app['cargo.routes'], $app),
+            new \Cargo\Cache\TemplateCacheHandler($app['cargo.templates'], $app),
+          ));
         });
 
-        if (isset($app['twig'])) {
-            $app['twig.templates'] = $app->share(function () use ($app) {
-                return $app['cargo.templates']->toTwigCollection();
-            });
-        }
-
+        // Registers the cargo main application.
         $app['cargo'] = $app->share(function () use ($app) {
             return new Cargo($app);
         });
