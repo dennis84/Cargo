@@ -1,7 +1,7 @@
 {
     "name": "dennis84/cargo",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-0": { "Cargo": "src/" }
     },
     "require": {
         "php":                 ">=5.3.2",
