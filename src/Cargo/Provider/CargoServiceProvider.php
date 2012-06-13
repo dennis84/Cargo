@@ -39,14 +39,6 @@ class CargoServiceProvider implements ServiceProviderInterface
             throw new \Exception('You must enable twig.');
         }
 
-        // Registers the cargo annotations.
-        $loader = $app['autoloader'];
-
-        AnnotationRegistry::registerLoader(function($class) use ($loader) {
-            $loader->loadClass($class);
-            return class_exists($class, false);
-        });
-
         AnnotationRegistry::registerFile(
             __DIR__ . '/../Annotation/CargoAnnotations.php'
         );
@@ -95,5 +87,9 @@ class CargoServiceProvider implements ServiceProviderInterface
         $app['cargo'] = $app->share(function () use ($app) {
             return new Cargo($app);
         });
+    }
+
+    public function boot(Application $app)
+    {
     }
 }
