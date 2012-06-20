@@ -1,34 +1,81 @@
 {
-    "hash": "2793c2584536f0d2c04988cef08dfcb2",
+    "hash": "c65cfe33206c25569f935284f6b0e9a0",
     "packages": [
         {
             "package": "doctrine/common",
-            "version": "2.2.x-dev",
-            "source-reference": "1e0aa60d109c630d19543d999f12e2852ef8f932"
+            "version": "dev-master",
+            "alias-pretty-version": "2.3.x-dev",
+            "alias-version": "2.3.9999999.9999999-dev"
         },
         {
-            "package": "monolog/monolog",
+            "package": "doctrine/common",
             "version": "dev-master",
-            "source-reference": "d348b2c2529f8468ba27189b99d4eed247ebac7c"
+            "source-reference": "f0b548aa55bb7dac36d79061270a085dd38635b4"
         },
         {
-            "package": "swiftmailer/swiftmailer",
+            "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "d89cf0d1c9eb980dfb8d37f902265bb504c7bf5e"
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
+        },
+        {
+            "package": "pimple/pimple",
+            "version": "dev-master",
+            "source-reference": "694448bdd2b7d802517104bdafe1a6f2591506c8"
+        },
+        {
+            "package": "silex/silex",
+            "version": "dev-master",
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
+        },
+        {
+            "package": "silex/silex",
+            "version": "dev-master",
+            "source-reference": "8150e2ca6d7145aa33aeb6d57e4a728317a36621"
         },
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "539634cbaac67e943e9dc51ef8d323c6b1a7525d",
-            "alias": "2.1.9999999.9999999-dev"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/symfony",
+            "version": "dev-master",
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/symfony",
+            "version": "dev-master",
+            "source-reference": "092b5dde62df60c268c8d99bd5d45d50cda42acc"
         },
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "0add6e23771bf44d8ee643c555597b87ae4a598b",
-            "alias": "1.7.9999999.9999999-dev"
+            "alias-pretty-version": "1.8.x-dev",
+            "alias-version": "1.8.9999999.9999999-dev"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "alias-pretty-version": "1.8.x-dev",
+            "alias-version": "1.8.9999999.9999999-dev"
+        },
+        {
+            "package": "twig/twig",
+            "version": "dev-master",
+            "source-reference": "4679ad51c5390648b7ea4c8f0ecd2c0c344145ba"
         }
     ],
     "packages-dev": null,
-    "aliases": []
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "symfony/symfony": 20,
+        "silex/silex": 20
+    }
 }
