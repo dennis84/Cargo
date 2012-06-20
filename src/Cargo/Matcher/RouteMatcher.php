@@ -44,7 +44,12 @@ class RouteMatcher implements MatcherInterface
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof \Cargo\Annotation\Route) {
-                $defaults = array('_template' => $template);
+                $defaults = array(
+                    '_template'   => $template,
+                    '_controller' => function () {
+                        return null;
+                    }
+                );
 
                 $route = new Route(
                     $annotation->getPattern(),

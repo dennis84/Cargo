@@ -5,6 +5,7 @@ ini_set('display_errors', 1);
 require_once __DIR__.'/../../vendor/autoload.php';
 
 $app = new \Silex\Application();
+$app['debug'] = true;
 
 $app->register(new \Silex\Provider\TwigServiceProvider());
 
@@ -17,6 +18,9 @@ $app['cargo']->registerThemes(array(
     'wiki'    => __DIR__.'/../themes/wiki',
 ));
 
-$app['debug'] = true;
+$app->error(function (\Exception $e, $code) {
+  echo $e->getMessage();
+  echo $code;
+});
 
 $app->run();
