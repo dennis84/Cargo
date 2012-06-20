@@ -40,9 +40,9 @@ class RouteMatcher implements MatcherInterface
     /**
      * {@inheritDoc}
      */
-    public function match(TemplateInterface $template, array $annotations)
+    public function match(TemplateInterface $template)
     {
-        foreach ($annotations as $annotation) {
+        foreach ($template->getAnnotations() as $annotation) {
             if ($annotation instanceof \Cargo\Annotation\Route) {
                 $defaults = array(
                     '_template'   => $template,

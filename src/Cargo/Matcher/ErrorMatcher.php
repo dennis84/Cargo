@@ -11,23 +11,36 @@
 
 namespace Cargo\Matcher;
 
+use Silex\Application;
 use Cargo\Template\TemplateInterface;
 
 /** 
- * TemplateMatcher.
+ * ErrorMatcher.
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
-class TemplateMatcher implements MatcherInterface
+class ErrorMatcher implements MatcherInterface
 {
+    /**
+     * Constructor.
+     *
+     * @param Application $app The silex application
+     */
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * {@inheritDoc}
      */
     public function match(TemplateInterface $template)
     {
         foreach ($template->getAnnotations() as $annotation) {
-            if ($annotation instanceof \Cargo\Annotation\Template) {
-                $template->setName($annotation->getName());
+            if ($annotation instanceof \Cargo\Annotation\Error) {
+                $this->app->error(function (\Exception $e, $code) use ($template) {
+                    return $this->app['twig']->render($template->getName());
+                });
             }
         }
     }

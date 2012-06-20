@@ -42,6 +42,7 @@ class TemplateCacheHandler implements CacheHandlerInterface
 
         foreach ($theme->getTemplates() as $name => $body) {
             $content .= sprintf('
+              
 $templates["%s"] = <<<EOF
   %s
 EOF;

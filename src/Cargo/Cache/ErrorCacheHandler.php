@@ -11,16 +11,17 @@
 
 namespace Cargo\Cache;
 
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Config\ConfigCache;
 use Silex\Application;
 use Cargo\Template\Theme;
 
 /**
- * RouteCacheHandler.
+ * ErrorCacheHandler.
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
-class RouteCacheHandler implements CacheHandlerInterface
+class ErrorCacheHandler implements CacheHandlerInterface
 {
     /**
      * Constructor.
@@ -37,38 +38,26 @@ class RouteCacheHandler implements CacheHandlerInterface
      */
     public function onNonFresh(Theme $theme, ConfigCache $cache)
     {
-        $content   = '<?php $app = $this->app; ';
+        $content = '<?php $app = $this->app; ';
+        foreach ($theme->getOriginalTemplates() as $template) {
+          foreach ($template->getAnnotations() as $annotation) {
+            if ($annotation instanceof \Cargo\Annotation\Error) {
 
-        foreach ($this->app['cargo.routes'] as $route) {
-            $compiledRoute     = $route->compile();
-            $routeVariables    = '';
-            $templateVariables = '';
+              $content .= sprintf(<<<EOF
 
-            foreach ($compiledRoute->getVariables() as $variable) {
-                $routeVariables    .= '$'.$variable;
-                $templateVariables .= sprintf('"%s" => $%s,', $variable, $variable);
-            }
-
-            $routeDefaults = $route->getDefaults();
-            $template      = $routeDefaults['_template'];
-
-            $content .= sprintf(<<<EOF
-
-\$app->get('%s', function (%s) use (\$app) {
+\$app->error(function (\\Exception \$exception, \$code) use (\$app) {
     return \$app['twig']->render('%s', array(
-        %s
+        'exception' => \$exception,
+        'code'      => \$code,
     ));
 });
 
 EOF
                 ,
-                $route->getPattern(),
-                $routeVariables,
-                $template->getName(),
-                $templateVariables
-            );
+                $template->getName());
+            }
+          }
         }
-
         $cache->write($content);
     }
 
@@ -85,6 +74,6 @@ EOF
      */
     public function getName()
     {
-        return 'routes';
+        return 'error';
     }
 }

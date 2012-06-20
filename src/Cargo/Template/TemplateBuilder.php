@@ -58,6 +58,7 @@ class TemplateBuilder
             $templates->add($template);
         }
 
+        $theme->setOriginalTemplates($templates);
         $theme->setTemplates($templates->toTwigCollection());
     }
 

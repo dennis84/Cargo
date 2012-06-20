@@ -16,8 +16,7 @@ interface MatcherInterface
      * with the template or other parameters you passed in the 
      * constructor.
      *
-     * @param TemplateInterface $template    The template object
-     * @param array             $annotations The doctrine annotations found in the template
+     * @param TemplateInterface $template The template object
      */
-    function match(TemplateInterface $template, array $annotations);
+    function match(TemplateInterface $template);
 }

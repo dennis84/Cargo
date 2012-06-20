@@ -34,6 +34,11 @@ class Theme
     protected $templates;
 
     /**
+     * @var TemplateCollection
+     */
+    protected $originalTemplates = array();
+
+    /**
      * Constructor.
      *
      * @param string $name      The theme name
@@ -91,5 +96,25 @@ class Theme
     public function setTemplates(array $templates)
     {
         $this->templates = $templates;
+    }
+
+    /**
+     * Gets the original templates.
+     *
+     * @return array
+     */
+    public function getOriginalTemplates()
+    {
+        return $this->originalTemplates;
+    }
+
+    /**
+     * Sets the original templates.
+     *
+     * @param array $originalTemplates The original template collection
+     */
+    public function setOriginalTemplates(TemplateCollection $originalTemplates)
+    {
+        $this->originalTemplates = $originalTemplates;
     }
 }

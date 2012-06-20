@@ -34,17 +34,12 @@ class Template implements TemplateInterface
     /**
      * @var array
      */
-    protected $parameters = array();
+    protected $routes = array();
 
     /**
      * @var array
      */
-    protected $routes = array();
-
-    /**
-     * @var mixed
-     */
-    protected $controller;
+    protected $annotations = array();
 
     /**
      * @var boolean
@@ -148,23 +143,41 @@ class Template implements TemplateInterface
     }
 
     /**
-     * Gets the controller.
+     * Sets the annotations.
      *
-     * @return mixed
+     * @param array $annotations The annotations
      */
-    public function getController()
+    public function setAnnotations($annotations)
     {
-        return $this->controller;
+        $this->annotations = $annotations;
     }
 
     /**
-     * Sets the controller.
+     * Gets the annotations.
      *
-     * @param mixed $controller The controller
+     * @return array
      */
-    public function setController($controller)
+    public function getAnnotations()
     {
-        $this->controller = $controller;
+        return $this->annotations;
+    }
+
+    /**
+     * Returns true or false if the template has an annotation by name.
+     *
+     * @param string $name The annotation name
+     *
+     * @return boolean
+     */
+    public function hasAnnotation($name)
+    {
+        foreach ($this->annotations as $annotation) {
+            if ($name == (string) $annotation) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

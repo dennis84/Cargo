@@ -52,8 +52,10 @@ class TemplateCompiler
         $doc         = $file->readDocComments();
         $annotations = $this->parser->parse($doc);
 
+        $template->setAnnotations($annotations);
+
         foreach ($this->matchers as $matcher) {
-            $matcher->match($template, $annotations);
+            $matcher->match($template);
         }
 
         $template->setCompiled();

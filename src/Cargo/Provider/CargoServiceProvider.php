@@ -18,9 +18,6 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 
 use Cargo\Cargo;
-use Cargo\Matcher\TemplateMatcher;
-use Cargo\Matcher\RouteMatcher;
-use Cargo\Matcher\ControllerMatcher;
 use Cargo\Template\TemplateCollection;
 use Cargo\Template\TemplateResolver;
 use Cargo\Template\TemplateCompiler;
@@ -54,16 +51,6 @@ class CargoServiceProvider implements ServiceProviderInterface
             return new TemplateCollection();
         });
 
-        // Registers the template annotation matchers, at the moment is only 
-        // the template and route annotations possible.
-        $app['cargo.matcher.route'] = $app->share(function () use ($app) {
-            return new RouteMatcher($app['cargo.routes']);
-        });
-
-        $app['cargo.matcher.template'] = $app->share(function () use ($app) {
-            return new TemplateMatcher();
-        });
-
         $app['cargo.template.builder'] = $app->share(function () use ($app) {
             return new TemplateBuilder($app['cargo.template.compiler']);
         });
@@ -71,15 +58,17 @@ class CargoServiceProvider implements ServiceProviderInterface
         // Registers the template compiler service.
         $app['cargo.template.compiler'] = $app->share(function () use ($app) {
             return new TemplateCompiler(array(
-                $app['cargo.matcher.route'],
-                $app['cargo.matcher.template'],
+                new \Cargo\Matcher\RouteMatcher($app['cargo.routes']),
+                new \Cargo\Matcher\TemplateMatcher(),
+                new \Cargo\Matcher\ErrorMatcher($app),
             ));
         });
  
         $app['cargo.cache_loader'] = $app->share(function () use ($app) {
             return new \Cargo\Cache\Loader($app['cargo.cache_dir'], $app['debug'], array(
-                new \Cargo\Cache\RouteCacheHandler($app['cargo.routes'], $app),
+                new \Cargo\Cache\RouteCacheHandler($app),
                 new \Cargo\Cache\TemplateCacheHandler($app),
+                new \Cargo\Cache\ErrorCacheHandler($app),
             ));
         });
 

@@ -83,3 +83,14 @@ class Template
 class Route extends BaseRoute
 {
 }
+
+/**
+ * Error.
+ *
+ * @author Dennis Dietrich <d.dietrich84@googlemail.com>
+ *
+ * @Annotation
+ */
+class Error
+{
+}
