@@ -37,6 +37,9 @@ class Cargo implements EventSubscriberInterface
      */
     protected $app;
 
+    /**
+     * @var array
+     */
     protected $themes = array();
 
     /**
@@ -62,21 +65,22 @@ class Cargo implements EventSubscriberInterface
         $templateBuilder = $this->app['cargo.template.builder'];
 
         if (!isset($this->app['cargo.cache_dir'])) {
-          foreach ($themes as $name => $dir) {
-            $theme = new Theme($name, $dir);
-            $templateBuilder->createTemplatesFromTheme($theme);
-            $this->themes[] = $theme;
-            return $this->loadTheme($name, $dir);
-          }
+            foreach ($themes as $name => $dir) {
+                $theme = new Theme($name, $dir);
+                $templateBuilder->createTemplatesFromTheme($theme);
+                $this->themes[] = $theme;
+
+                return $this->loadTheme($name, $dir);
+            }
         }
 
         foreach ($themes as $name => $dir) {
-          $theme = new Theme($name, $dir);
-          $this->app['cargo.cache_loader']->load($theme, function ($theme) use ($templateBuilder) {
-            $templateBuilder->createTemplatesFromTheme($theme);
-          });
+            $theme = new Theme($name, $dir);
+            $this->app['cargo.cache_loader']->load($theme, function ($theme) use ($templateBuilder) {
+                $templateBuilder->createTemplatesFromTheme($theme);
+            });
 
-          $this->themes[] = $theme;
+            $this->themes[] = $theme;
         }
     }
 
@@ -103,6 +107,11 @@ class Cargo implements EventSubscriberInterface
         $event->setResponse(new Response($output));
     }
 
+    /**
+     * Gets the registered themes.
+     *
+     * @return array
+     */
     public function getThemes()
     {
         return $this->themes;

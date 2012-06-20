@@ -14,13 +14,14 @@ namespace Cargo\Cache;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Config\ConfigCache;
 use Silex\Application;
+use Cargo\Template\Theme;
 
 /**
  * RouteCacheHandler.
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
-class RouteCacheHandler
+class RouteCacheHandler implements CacheHandlerInterface
 {
     /**
      * Constructor.
@@ -37,7 +38,7 @@ class RouteCacheHandler
     /**
      * {@inheritDoc}
      */
-    public function onNonFresh($theme, ConfigCache $cache)
+    public function onNonFresh(Theme $theme, ConfigCache $cache)
     {
         $content   = '<?php $app = $this->app; ';
 
@@ -76,7 +77,7 @@ EOF
     /**
      * {@inheritDoc}
      */
-    public function onFresh($theme, ConfigCache $cache)
+    public function onFresh(Theme $theme, ConfigCache $cache)
     {
         include $cache;
     }

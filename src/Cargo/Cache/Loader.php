@@ -12,6 +12,7 @@
 namespace Cargo\Cache;
 
 use Symfony\Component\Config\ConfigCache;
+use Cargo\Template\Theme;
 
 /**
  * Loader.
@@ -53,9 +54,10 @@ class Loader
      * Loads the cache. You have to pass a initializing closure function to 
      * build a valid environment when the cache is not fresh.
      *
-     * @param \Closure $initializer The non freshnes initializer
+     * @param Theme   $theme       The theme object
+     * @param Closure $initializer The non freshnes initializer
      */
-    public function load($theme, \Closure $initializer)
+    public function load(Theme $theme, \Closure $initializer)
     {
         foreach ($this->handlers as $handler) {
             $cache = new ConfigCache($this->cacheDir.'/'.$theme->getName().'_'.$handler->getName().'.php', $this->debug);

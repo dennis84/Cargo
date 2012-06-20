@@ -1,17 +1,46 @@
 <?php
 
+/*
+ * This file is part of the cargo framework
+ *
+ * (c) Dennis Dietrich <d.dietrich84@googlemail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Cargo\Matcher;
 
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
+use Cargo\Template\TemplateInterface;
 
-class RouteMatcher
+/** 
+ * RouteMatcher.
+ *
+ * @author Dennis Dietrich <d.dietrich84@googlemail.com>
+ */
+class RouteMatcher implements MatcherInterface
 {
-    public function __construct($routes)
+    /**
+     * @var RouteCollection
+     */
+    protected $routes;
+
+    /**
+     * Constructor.
+     *
+     * @param RouteCollection
+     */
+    public function __construct(RouteCollection $routes)
     {
         $this->routes = $routes;
     }
 
-    public function match($template, $annotations)
+    /**
+     * {@inheritDoc}
+     */
+    public function match(TemplateInterface $template, array $annotations)
     {
         foreach ($annotations as $annotation) {
             if ($annotation instanceof \Cargo\Annotation\Route) {

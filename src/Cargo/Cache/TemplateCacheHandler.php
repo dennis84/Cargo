@@ -12,21 +12,21 @@
 namespace Cargo\Cache;
 
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Config\ConfigCache;
 use Silex\Application;
-use Cargo\Template\TemplateCollection;
+use Cargo\Template\Theme;
 
 /**
  * TemplateCacheHandler.
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
-class TemplateCacheHandler
+class TemplateCacheHandler implements CacheHandlerInterface
 {
     /**
      * Constructor.
      *
-     * @param TemplateCollection $cargoTemplates The cargo template collection
-     * @param Application        $app The silex application
+     * @param Application $app The silex application
      */
     public function __construct(Application $app)
     {
@@ -36,7 +36,7 @@ class TemplateCacheHandler
     /**
      * {@inheritDoc}
      */
-    public function onNonFresh($theme, $cache)
+    public function onNonFresh(Theme $theme, ConfigCache $cache)
     {
         $content = '<?php $templates = array(); ';
 
@@ -59,7 +59,7 @@ EOF;
     /**
      * {@inheritDoc}
      */
-    public function onFresh($theme, $cache)
+    public function onFresh(Theme $theme, ConfigCache $cache)
     {
         $templates = array();
 
