@@ -22,8 +22,8 @@ use Silex\SilexEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 use Cargo\Template\TemplateBuilder;
-use Cargo\Template\Collection\TemplateCollection;
 use Cargo\Template\Event\RouteListener;
+use Cargo\Template\Theme;
 
 /**
  * Cargo.
@@ -36,6 +36,8 @@ class Cargo implements EventSubscriberInterface
      * @var Application
      */
     protected $app;
+
+    protected $themes = array();
 
     /**
      * Constructor.
@@ -57,50 +59,25 @@ class Cargo implements EventSubscriberInterface
      */
     public function registerThemes(array $themes = array())
     {
+        $templateBuilder = $this->app['cargo.template.builder'];
+
         if (!isset($this->app['cargo.cache_dir'])) {
-            return $this->loadTemplates($themes);
+          foreach ($themes as $name => $dir) {
+            $theme = new Theme($name, $dir);
+            $templateBuilder->createTemplatesFromTheme($theme);
+            $this->themes[] = $theme;
+            return $this->loadTheme($name, $dir);
+          }
         }
 
-        $cargo = $this;
-        $this->app['cargo.cache_loader']->load(function () use ($cargo, $themes) {
-            $cargo->loadTemplates($themes);
-        });
-    }
-
-    /**
-     * Loads the templates from filesystem. This method must have public access
-     * to ensure calling from the closure above.
-     *
-     * @param array $themes The theme collection
-     */
-    public function loadTemplates(array $themes)
-    {
-        $builder = new TemplateBuilder(
-            $this->app['cargo.templates'],
-            $this->app['cargo.template.compiler']
-        );
-
         foreach ($themes as $name => $dir) {
-            $builder->createTemplatesFromDir($dir);
-        }   
-    }
+          $theme = new Theme($name, $dir);
+          $this->app['cargo.cache_loader']->load($theme, function ($theme) use ($templateBuilder) {
+            $templateBuilder->createTemplatesFromTheme($theme);
+          });
 
-    /**
-     * Handles onKernelRequest events.
-     *
-     * Ensure that the cargo routes will pushed to the
-     * Silex Routes. The reason why cargo uses their own collection
-     * is that the silex routes will initialized after running the
-     * application and the priority of silex routes must be higher,
-     * because we enable silex to override the cargo templates.
-     *
-     * @param KernelEvent $event The kernel event
-     */
-    public function onKernelRequest(KernelEvent $event)
-    {
-        $this->app['routes']->addCollection(
-            $this->app['cargo.routes']
-        );
+          $this->themes[] = $theme;
+        }
     }
 
     /**
@@ -126,6 +103,11 @@ class Cargo implements EventSubscriberInterface
         $event->setResponse(new Response($output));
     }
 
+    public function getThemes()
+    {
+        return $this->themes;
+    }
+
     /**
      * The subscribed events.
      *
@@ -134,8 +116,7 @@ class Cargo implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST => array('onKernelRequest', 999),
-            SilexEvents::AFTER    => 'onSilexAfter',
+            SilexEvents::AFTER => 'onSilexAfter',
         );
     }
 }

@@ -55,15 +55,15 @@ class Loader
      *
      * @param \Closure $initializer The non freshnes initializer
      */
-    public function load(\Closure $initializer)
+    public function load($theme, \Closure $initializer)
     {
         foreach ($this->handlers as $handler) {
-            $cache = new ConfigCache($this->cacheDir.'/'.$handler->getName().'.php', $this->debug);
+            $cache = new ConfigCache($this->cacheDir.'/'.$theme->getName().'_'.$handler->getName().'.php', $this->debug);
             if (!$cache->isFresh()) {
-                $initializer();
-                $handler->onNonFresh($cache);
+                $initializer($theme);
+                $handler->onNonFresh($theme, $cache);
             } else {
-                $handler->onFresh($cache);
+                $handler->onFresh($theme, $cache);
             }
         }
     }

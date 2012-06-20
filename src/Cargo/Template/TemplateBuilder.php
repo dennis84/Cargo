@@ -31,54 +31,34 @@ class TemplateBuilder
     protected $dispatcher;
 
     /**
-     * @var TemplateCollection
-     */
-    protected $templates;
-
-    /**
      * Constructor.
      *
      * @param TemplateCollection $templates  The templates
      * @param EventDispatcher    $dispatcher The event dispatcher
      */
-    public function __construct(TemplateCollection $templates, $compiler)
+    public function __construct(TemplateCompiler $compiler)
     {
-        $this->templates  = $templates;
         $this->compiler = $compiler;
-        
     }
 
     /**
-     * Creates templates from dir.
+     * Creates templates from theme.
      *
-     * @param string $dir The template dir
+     * @param Theme $theme The theme object
      */
-    public function createTemplatesFromDir($dir)
+    public function createTemplatesFromTheme(Theme $theme)
     {
-        if (!is_dir($dir)) {
-            throw new \InvalidArgumentException(
-                sprintf('the directory "%s" does not exists', $dir)
-            );
-        }
-
-        $finder = $this->findTemplatesByDir($dir);
+        $templates = new TemplateCollection();
+        $finder    = $this->findTemplatesByDir($theme->getDir());
 
         foreach ($finder->getIterator() as $file) {
             $template = new Template($file->getRealPath());
 
             $this->compiler->compile($template);
-            $this->templates->add($template);
+            $templates->add($template);
         }
-    }
 
-    /**
-     * Gets the templates.
-     *
-     * @return TemplateCollection
-     */
-    public function getTemplates()
-    {
-        return $this->templates;
+        $theme->setTemplates($templates->toTwigCollection());
     }
 
     /**

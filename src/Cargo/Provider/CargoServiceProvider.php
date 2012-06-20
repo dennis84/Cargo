@@ -24,6 +24,7 @@ use Cargo\Matcher\ControllerMatcher;
 use Cargo\Template\TemplateCollection;
 use Cargo\Template\TemplateResolver;
 use Cargo\Template\TemplateCompiler;
+use Cargo\Template\TemplateBuilder;
 
 /** 
  *  CargoServiceProvider.
@@ -63,6 +64,10 @@ class CargoServiceProvider implements ServiceProviderInterface
             return new TemplateMatcher();
         });
 
+        $app['cargo.template.builder'] = $app->share(function () use ($app) {
+            return new TemplateBuilder($app['cargo.template.compiler']);
+        });
+
         // Registers the template compiler service.
         $app['cargo.template.compiler'] = $app->share(function () use ($app) {
             return new TemplateCompiler(array(
@@ -70,17 +75,12 @@ class CargoServiceProvider implements ServiceProviderInterface
                 $app['cargo.matcher.template'],
             ));
         });
-
-        // Sets all cargo templates to the twig template collection.
-        $app['twig.templates'] = $app->share(function () use ($app) {
-            return $app['cargo.templates']->toTwigCollection();
-        });
  
         $app['cargo.cache_loader'] = $app->share(function () use ($app) {
-          return new \Cargo\Cache\Loader($app['cargo.cache_dir'], $app['debug'], array(
-            new \Cargo\Cache\RouteCacheHandler($app['cargo.routes'], $app),
-            new \Cargo\Cache\TemplateCacheHandler($app['cargo.templates'], $app),
-          ));
+            return new \Cargo\Cache\Loader($app['cargo.cache_dir'], $app['debug'], array(
+                new \Cargo\Cache\RouteCacheHandler($app['cargo.routes'], $app),
+                new \Cargo\Cache\TemplateCacheHandler($app),
+            ));
         });
 
         // Registers the cargo main application.
@@ -89,7 +89,19 @@ class CargoServiceProvider implements ServiceProviderInterface
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function boot(Application $app)
     {
+        $templates = $app['twig.templates'];
+
+        foreach ($app['cargo']->getThemes() as $theme) {
+            $templates = array_merge($templates, $theme->getTemplates());
+        }
+
+        $app['twig.templates'] = $templates;
+
+        $app['routes']->addCollection($app['cargo.routes']);
     }
 }

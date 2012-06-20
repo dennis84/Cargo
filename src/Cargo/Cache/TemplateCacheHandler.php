@@ -28,27 +28,28 @@ class TemplateCacheHandler
      * @param TemplateCollection $cargoTemplates The cargo template collection
      * @param Application        $app The silex application
      */
-    public function __construct(TemplateCollection $cargoTemplates, Application $app)
+    public function __construct(Application $app)
     {
-        $this->cargoTemplates = $cargoTemplates;
-        $this->app            = $app;
+        $this->app = $app;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function onNonFresh($cache)
+    public function onNonFresh($theme, $cache)
     {
         $content = '<?php $templates = array(); ';
 
-        foreach ($this->cargoTemplates as $template) {
-            $content .= sprintf(<<<EOF
-\$templates['%s'] = file_get_contents('%s');
+        foreach ($theme->getTemplates() as $name => $body) {
+            $content .= sprintf('
+$templates["%s"] = <<<EOF
+  %s
+EOF;
 
-EOF
+'
                 ,
-                $template->getName(), 
-                $template->getPath()
+                $name,
+                $body
             );
         }
 
@@ -58,7 +59,7 @@ EOF
     /**
      * {@inheritDoc}
      */
-    public function onFresh($cache)
+    public function onFresh($theme, $cache)
     {
         $templates = array();
 

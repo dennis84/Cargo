@@ -37,7 +37,7 @@ class RouteCacheHandler
     /**
      * {@inheritDoc}
      */
-    public function onNonFresh(ConfigCache $cache)
+    public function onNonFresh($theme, ConfigCache $cache)
     {
         $content   = '<?php $app = $this->app; ';
 
@@ -76,7 +76,7 @@ EOF
     /**
      * {@inheritDoc}
      */
-    public function onFresh(ConfigCache $cache)
+    public function onFresh($theme, ConfigCache $cache)
     {
         include $cache;
     }
