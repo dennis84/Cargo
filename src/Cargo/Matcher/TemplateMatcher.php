@@ -25,10 +25,8 @@ class TemplateMatcher implements MatcherInterface
      */
     public function match(TemplateInterface $template)
     {
-        foreach ($template->getAnnotations() as $annotation) {
-            if ($annotation instanceof \Cargo\Annotation\Template) {
-                $template->setName($annotation->getName());
-            }
+        if ($annotation = $template->getAnnotation('Cargo\Annotation\Template')) {
+            $template->setName($annotation->getName());
         }
     }
 }

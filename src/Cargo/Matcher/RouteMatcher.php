@@ -42,6 +42,8 @@ class RouteMatcher implements MatcherInterface
      */
     public function match(TemplateInterface $template)
     {
+        // Dont forget to got through all annotations, because one template can have
+        // many routes.
         foreach ($template->getAnnotations() as $annotation) {
             if ($annotation instanceof \Cargo\Annotation\Route) {
                 $defaults = array(
@@ -56,11 +58,7 @@ class RouteMatcher implements MatcherInterface
                     array_merge($annotation->getDefaults(), $defaults)
                 );
 
-                $this->routes->add(
-                    $annotation->getName(),
-                    $route
-                );
-
+                $this->routes->add($annotation->getName(), $route);
                 $template->addRoute($route);
             }
         }

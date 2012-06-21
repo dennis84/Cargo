@@ -163,6 +163,22 @@ class Template implements TemplateInterface
     }
 
     /**
+     * Gets a annotation by class name.
+     *
+     * @param string $name The class name
+     *
+     * @return object|null
+     */
+    public function getAnnotation($name)
+    {
+        foreach ($this->annotations as $annotation) {
+            if ($annotation instanceof $name) {
+                return $annotation;
+            }
+        }
+    }
+
+    /**
      * Returns true or false if the template has an annotation by name.
      *
      * @param string $name The annotation name
@@ -171,13 +187,7 @@ class Template implements TemplateInterface
      */
     public function hasAnnotation($name)
     {
-        foreach ($this->annotations as $annotation) {
-            if ($name == (string) $annotation) {
-                return true;
-            }
-        }
-
-        return false;
+        return (null === $this->getAnnotation($name)) ? false : true;
     }
 
     /**
