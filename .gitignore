@@ -1,3 +1,4 @@
 vendor
 composer.phar
 sample/cache
+sample/monolog.txt
