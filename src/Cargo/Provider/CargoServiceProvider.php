@@ -36,10 +36,8 @@ class CargoServiceProvider implements ServiceProviderInterface
         if (!isset($app['twig'])) {
             throw new \Exception('You must enable twig.');
         }
-
-        AnnotationRegistry::registerFile(
-            __DIR__ . '/../Annotation/CargoAnnotations.php'
-        );
+        
+        AnnotationRegistry::registerAutoloadNamespace('Cargo\Annotation', __DIR__.'/../..');
 
         // Registers the cargo route collection class.
         $app['cargo.routes'] = $app->share(function () {
@@ -61,6 +59,7 @@ class CargoServiceProvider implements ServiceProviderInterface
                 new \Cargo\Matcher\RouteMatcher($app['cargo.routes']),
                 new \Cargo\Matcher\TemplateMatcher(),
                 new \Cargo\Matcher\ErrorMatcher($app),
+                new \Cargo\Matcher\SecurityMatcher($app),
             ));
         });
  
@@ -69,6 +68,7 @@ class CargoServiceProvider implements ServiceProviderInterface
                 new \Cargo\Cache\RouteCacheHandler($app),
                 new \Cargo\Cache\TemplateCacheHandler($app),
                 new \Cargo\Cache\ErrorCacheHandler($app),
+                new \Cargo\Cache\SecurityCacheHandler($app),
             ));
         });
 
