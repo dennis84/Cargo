@@ -91,6 +91,13 @@ class CargoServiceProvider implements ServiceProviderInterface
 
         $app['twig.templates'] = $templates;
 
-        $app['routes']->addCollection($app['cargo.routes']);
+        foreach ($app['cargo.routes'] as $route) {
+            $template      = $route->getDefault('_template');
+            $compiledRoute = $route->compile();
+
+            $app->get($route->getPattern(), function () use ($app, $compiledRoute, $template) {
+                return $app['twig']->render($template->getName(), $compiledRoute->getVariables());
+            });
+        }
     }
 }

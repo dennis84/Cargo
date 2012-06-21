@@ -11,16 +11,7 @@
 
 namespace Cargo;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\KernelEvent;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-
 use Silex\Application;
-use Silex\SilexEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-
 use Cargo\Template\TemplateBuilder;
 use Cargo\Template\Event\RouteListener;
 use Cargo\Template\Theme;
@@ -30,7 +21,7 @@ use Cargo\Template\Theme;
  *
  * @author Dennis Dietrich <d.dietrich84@googlemail.com>
  */
-class Cargo implements EventSubscriberInterface
+class Cargo
 {
     /**
      * @var Application
@@ -50,7 +41,6 @@ class Cargo implements EventSubscriberInterface
     public function __construct(Application $app)
     {
         $this->app = $app;
-        $app['dispatcher']->addSubscriber($this);
     }
 
     /**
@@ -85,29 +75,6 @@ class Cargo implements EventSubscriberInterface
     }
 
     /**
-     * Handles on silex after.
-     *
-     * @param FilterResponseEvent $event The kernel event
-     */
-    public function onSilexAfter(FilterResponseEvent $event)
-    {
-        $request  = $event->getRequest();
-        $template = $request->get('_template');
-        $route    = $request->get('_route');
-
-        if (null === $template) {
-            return;
-        }
-
-        $output = $this->app['twig']->render(
-            $template->getName(),
-            $request->attributes->all()
-        );
-
-        $event->setResponse(new Response($output));
-    }
-
-    /**
      * Gets the registered themes.
      *
      * @return array
@@ -115,17 +82,5 @@ class Cargo implements EventSubscriberInterface
     public function getThemes()
     {
         return $this->themes;
-    }
-
-    /**
-     * The subscribed events.
-     *
-     * @return array
-     */
-    static public function getSubscribedEvents()
-    {
-        return array(
-            SilexEvents::AFTER => 'onSilexAfter',
-        );
     }
 }
