@@ -1,5 +1,5 @@
 {
-    "hash": "c65cfe33206c25569f935284f6b0e9a0",
+    "hash": "9a00450f4c5e28ea98b090c6fda3c963",
     "packages": [
         {
             "package": "doctrine/common",
@@ -13,6 +13,11 @@
             "source-reference": "f0b548aa55bb7dac36d79061270a085dd38635b4"
         },
         {
+            "package": "monolog/monolog",
+            "version": "dev-master",
+            "source-reference": "ad9d31e0f4356d74406acd7f4536ee6cdbbcf69c"
+        },
+        {
             "package": "pimple/pimple",
             "version": "dev-master",
             "alias-pretty-version": "1.0.x-dev",
@@ -21,13 +26,13 @@
         {
             "package": "pimple/pimple",
             "version": "dev-master",
-            "source-reference": "694448bdd2b7d802517104bdafe1a6f2591506c8"
-        },
-        {
-            "package": "silex/silex",
-            "version": "dev-master",
             "alias-pretty-version": "1.0.x-dev",
             "alias-version": "1.0.9999999.9999999-dev"
+        },
+        {
+            "package": "pimple/pimple",
+            "version": "dev-master",
+            "source-reference": "86cae5c9e85cd02f1703c774ddf12f2448a5938c"
         },
         {
             "package": "silex/silex",
@@ -49,13 +54,7 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "092b5dde62df60c268c8d99bd5d45d50cda42acc"
-        },
-        {
-            "package": "twig/twig",
-            "version": "dev-master",
-            "alias-pretty-version": "1.8.x-dev",
-            "alias-version": "1.8.9999999.9999999-dev"
+            "source-reference": "55c6df995fd89a76ae09068da806eb9ae5e4a2e0"
         },
         {
             "package": "twig/twig",
@@ -76,6 +75,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "symfony/symfony": 20,
-        "silex/silex": 20
+        "silex/silex": 20,
+        "monolog/monolog": 20
     }
 }

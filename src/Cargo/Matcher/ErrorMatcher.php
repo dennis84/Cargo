@@ -36,9 +36,10 @@ class ErrorMatcher implements MatcherInterface
      */
     public function match(TemplateInterface $template)
     {
-        if ($template->hasAnnotation('Cargo\Annotation\Error')) {
-            $this->app->error(function (\Exception $e, $code) use ($template) {
-                return $this->app['twig']->render($template->getName());
+      if ($template->hasAnnotation('Cargo\Annotation\Error')) {
+            $app = $this->app;
+            $this->app->error(function (\Exception $e, $code) use ($template, $app) {
+                return $app['twig']->render($template->getName());
             });
         }
     }
