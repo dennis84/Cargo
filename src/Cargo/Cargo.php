@@ -69,8 +69,6 @@ class Cargo implements EventSubscriberInterface
                 $theme = new Theme($name, $dir);
                 $templateBuilder->createTemplatesFromTheme($theme);
                 $this->themes[] = $theme;
-
-                $this->loadTheme($name, $dir);
             }
 
             return;
