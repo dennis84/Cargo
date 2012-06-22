@@ -10,12 +10,14 @@ $app['debug'] = true;
 $app->register(new \Silex\Provider\TwigServiceProvider());
 
 $app->register(new \Cargo\Provider\CargoServiceProvider(), array(
-    'cargo.cache_dir' => __DIR__ . '/../cache',
+    //'cargo.cache_dir' => __DIR__ . '/../cache',
 ));
 
 $app->register(new \Silex\Provider\MonologServiceProvider(), array(
     'monolog.logfile' => __DIR__.'/../monolog.txt',
 ));
+
+$app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
 
 $app->register(new \Silex\Provider\SessionServiceProvider());
 $app['session']->start();
