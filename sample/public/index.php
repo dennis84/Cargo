@@ -28,17 +28,17 @@ $app->register(new \Cargo\Provider\AsseticServiceProvider(), array(
     'assetic.yui_path'    => __DIR__.'/../bin/yuicompressor.jar',
 ));
 
-//$app->register(new \Silex\Provider\SecurityServiceProvider());
+$app->register(new \Silex\Provider\SecurityServiceProvider());
 
-//$app['security.firewalls'] = array(
-    //'main' => array(
-        //'form'    => array('login_path' => '/login', 'check_path' => '/admin/login_check'),
-        //'users'   => array(
-            //'admin' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
-        //),
-        //'anonymous' => true,
-    //),
-//);
+$app['security.firewalls'] = array(
+    'main' => array(
+        'form'    => array('login_path' => '/login', 'check_path' => '/admin/login_check'),
+        'users'   => array(
+            'admin' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
+        ),
+        'anonymous' => true,
+    ),
+);
 
 $app['cargo']->registerThemes(array(
     'admin'   => __DIR__.'/../themes/admin',

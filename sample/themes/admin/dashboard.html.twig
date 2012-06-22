@@ -2,6 +2,7 @@
 
 @Template("admin_dashboard")
 @Route("/admin", name="admin_dashboard")
+@Secured("ROLE_ADMIN")
 
 #}
 <!doctype html>
