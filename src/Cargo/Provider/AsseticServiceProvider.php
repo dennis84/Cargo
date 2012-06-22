@@ -62,21 +62,19 @@ class AsseticServiceProvider implements ServiceProviderInterface
         });
 
         $app->before(function () use ($app) {
-            $app['twig']->addExtension($app['assetic.twig_extension']);
+            $app['twig']->addExtension($app['assetic.twig_extension'], $app['debug']);
         });
 
         $app->after(function () use ($app) {
-            $app['twig']->addExtension($app['assetic.twig_extension']);
-            $am = new LazyAssetManager($app['assetic.factory']);
+            $am     = new LazyAssetManager($app['assetic.factory']);
+            $loader = new \Twig_Loader_String();
 
-            // enable loading assets from twig templates
             $am->setLoader('twig', new TwigFormulaLoader($app['twig']));
 
             foreach ($app['twig.templates'] as $name => $template) {
-                $resource = new TwigResource($app['twig.loader'], $template);
+                $resource = new TwigResource($loader, $template);
                 $am->addResource($resource, 'twig');
             }
-            print_r($am->getNames());
 
             $writer = new AssetWriter($app['assetic.public_path']);
             $writer->writeManagerAssets($am);
