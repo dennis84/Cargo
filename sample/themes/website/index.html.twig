@@ -9,6 +9,12 @@
   <head>
     <meta charset="utf-8">
     <title>Website</title>
+    {% stylesheets 
+        "css/reset.css"
+        "css/main.css"
+        filter="yui_css" output="css/all.css" %}
+        <link href="{{ asset_url }}" rel="stylesheet">
+    {% endstylesheets %}
   </head>
 
   <body>
