@@ -83,6 +83,11 @@ class CargoServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
+        // Security provider fix. The security listener must be registered before the route listener.
+        if (isset($app['security'])) {
+            $app['dispatcher']->addListener('kernel.request', array($app['security.firewall'], 'onKernelRequest'), 64);
+        }
+
         $templates = $app['twig.templates'];
 
         foreach ($app['cargo']->getThemes() as $theme) {

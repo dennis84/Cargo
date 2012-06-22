@@ -50,7 +50,7 @@ class AsseticServiceProvider implements ServiceProviderInterface
         });
 
         $app['assetic.factory'] = $app->share(function () use ($app) {
-            $factory = new AssetFactory($app['assetic.public_path'], $app['debug']);
+            $factory = new AssetFactory($app['assetic.asset_path'], $app['debug']);
             $factory->setAssetManager($app['assetic.asset_manager']);
             $factory->setFilterManager($app['assetic.filter_manager']);
 
@@ -61,20 +61,18 @@ class AsseticServiceProvider implements ServiceProviderInterface
             return new AsseticExtension($app['assetic.factory']);
         });
 
-        $app['assetic.asset_writer'] = $app->share(function () use ($app) {
-        });
-
         $app->before(function () use ($app) {
             $app['twig']->addExtension($app['assetic.twig_extension']);
         });
 
         $app->after(function () use ($app) {
+            $app['twig']->addExtension($app['assetic.twig_extension']);
             $am = new LazyAssetManager($app['assetic.factory']);
 
             // enable loading assets from twig templates
             $am->setLoader('twig', new TwigFormulaLoader($app['twig']));
 
-            foreach ($app['twig.templates'] as $template) {
+            foreach ($app['twig.templates'] as $name => $template) {
                 $resource = new TwigResource($app['twig.loader'], $template);
                 $am->addResource($resource, 'twig');
             }
