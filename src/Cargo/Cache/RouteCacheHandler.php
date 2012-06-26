@@ -39,7 +39,7 @@ class RouteCacheHandler implements CacheHandlerInterface
     {
         $content   = '<?php $app = $this->app; ';
 
-        foreach ($this->app['cargo.routes'] as $route) {
+        foreach ($this->app['cargo.routes'] as $routeName => $route) {
             $compiledRoute     = $route->compile();
             $routeVariables    = '';
             $templateVariables = '';
@@ -58,14 +58,15 @@ class RouteCacheHandler implements CacheHandlerInterface
     return \$app['twig']->render('%s', array(
         %s
     ));
-});
+})->bind('%s');
 
 EOF
                 ,
                 $route->getPattern(),
                 $routeVariables,
                 $template->getName(),
-                $templateVariables
+                $templateVariables,
+                $routeName
             );
         }
 
