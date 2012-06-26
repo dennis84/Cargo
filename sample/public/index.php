@@ -10,7 +10,7 @@ $app['debug'] = true;
 $app->register(new \Silex\Provider\TwigServiceProvider());
 
 $app->register(new \Cargo\Provider\CargoServiceProvider(), array(
-    //'cargo.cache_dir' => __DIR__ . '/../cache',
+    'cargo.cache_dir' => __DIR__ . '/../cache',
 ));
 
 $app->register(new \Silex\Provider\MonologServiceProvider(), array(

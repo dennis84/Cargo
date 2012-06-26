@@ -50,7 +50,7 @@ EOF;
 '
                 ,
                 $name,
-                $body
+                str_replace('$', '\$', $body)
             );
         }
 
