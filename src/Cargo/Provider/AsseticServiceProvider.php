@@ -13,6 +13,8 @@ namespace Cargo\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 use Assetic\AssetManager;
 use Assetic\FilterManager;
@@ -27,6 +29,8 @@ use Assetic\Extension\Twig\TwigFormulaLoader;
 use Assetic\Extension\Twig\TwigResource;
 use Assetic\Factory\LazyAssetManager;
 
+use Assetic\Asset\AssetCache;
+use Assetic\Cache\FilesystemCache;
 
 /** 
  *  AsseticServiceProvider.
@@ -67,6 +71,8 @@ class AsseticServiceProvider implements ServiceProviderInterface
 
         if ($app['debug']) {
             $app->after(function () use ($app) {
+                $cache  = new FilesystemCache($app['assetic.cache_path']);
+                $writer = new AssetWriter($app['assetic.public_path']);
                 $am     = new LazyAssetManager($app['assetic.factory']);
                 $loader = new \Twig_Loader_String();
 
@@ -77,8 +83,12 @@ class AsseticServiceProvider implements ServiceProviderInterface
                     $am->addResource($resource, 'twig');
                 }
 
-                $writer = new AssetWriter($app['assetic.public_path']);
-                $writer->writeManagerAssets($am);
+                foreach ($am->getNames() as $name) {
+                    $asset = $am->get($name);
+                    foreach ($asset as $leaf) {
+                        $writer->writeAsset(new AssetCache($leaf, $cache));
+                    }
+                }
             });
         }
     }
