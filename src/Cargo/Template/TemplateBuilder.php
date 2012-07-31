@@ -74,7 +74,7 @@ class TemplateBuilder
         $finder = Finder::create()
             ->ignoreDotFiles(true)
             ->files()
-            ->name('*.html.twig')
+            ->name('*.twig')
             ->in($dir)
         ;
 

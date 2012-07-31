@@ -25,6 +25,7 @@ $app['session']->start();
 $app->register(new \Cargo\Provider\AsseticServiceProvider(), array(
     'assetic.public_path' => __DIR__,
     'assetic.asset_path'  => __DIR__.'/../assets',
+    'assetic.cache_path'  => __DIR__.'/../cache',
     'assetic.yui_path'    => __DIR__.'/../bin/yuicompressor.jar',
 ));
 
