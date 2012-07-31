@@ -44,7 +44,7 @@ class TemplateCacheHandler implements CacheHandlerInterface
             $content .= sprintf('
               
 $templates["%s"] = <<<EOF
-  %s
+%s
 EOF;
 
 '
