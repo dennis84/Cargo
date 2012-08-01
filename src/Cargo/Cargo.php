@@ -54,7 +54,7 @@ class Cargo
     {
         $templateBuilder = $this->app['cargo.template.builder'];
 
-        if (!isset($this->app['cargo.cache_dir'])) {
+        if (!isset($this->app['cargo.cache_dir']) || $this->app['debug']) {
             foreach ($themes as $name => $dir) {
                 $theme = new Theme($name, $dir);
                 $templateBuilder->createTemplatesFromTheme($theme);

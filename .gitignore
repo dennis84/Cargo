@@ -2,3 +2,5 @@ vendor
 composer.phar
 sample/cache
 sample/monolog.txt
+sample/public/css
+sample/public/js

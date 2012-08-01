@@ -43,17 +43,40 @@ class TemplateFile extends \SplFileInfo
     }
 
     /**
+     * Gets the file header with doc comments. This method reads the file until
+     * the "#}" characters then stops.
+     *
+     * @return string
+     */
+    public function readHeader()
+    {
+        $file = new \SplFileObject($this->getRealPath(), 'r');
+        $rec  = true;
+        $doc  = '';
+
+        while ($rec && !$file->eof()) {
+            $doc .= $file->current();
+            if (false !== strpos($file->current(), '#}')) {
+                $rec = false;
+            }
+            $file->next();
+        }
+
+        return $doc;
+    }
+
+    /**
      * Reads the template doc comments.
      *
      * @return string
      */
     public function readDocComments()
     {
-        preg_match('#\{\#(.*)\#\}#su', $this->read(), $config);
+        preg_match('#\{\#(.*)\#\}#su', $this->readHeader(), $config);
 
         if (empty($config[1])) {
             throw new \Exception(
-                sprintf('the template doc comments are not valid in "%s".', $this->path)
+                sprintf('the template doc comments are not valid in "%s".', $this->getRealPath())
             );
         }
 
