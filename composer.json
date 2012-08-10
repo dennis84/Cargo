@@ -5,7 +5,7 @@
     },
     "require": {
         "php":                   ">=5.3.2",
-        "symfony/symfony":       "2.1.x-dev",
+        "symfony/symfony":       "dev-master",
         "silex/silex":           "dev-master",
         "monolog/monolog":       "dev-master",
         "kriswallsmith/assetic": "dev-master"
