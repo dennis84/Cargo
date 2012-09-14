@@ -30,14 +30,18 @@ class RequestAssertMatcher implements MatcherInterface
     protected $routes;
 
     /**
+     * @var RouteCollection
+     */
+    protected $cargoRoutes;
+
+    /**
      * Constructor.
      *
      * @param RouteCollection
      */
-    public function __construct(RouteCollection $routes, EventDispatcherInterface $dispatcher)
+    public function __construct(RouteCollection $routes, RouteCollection $cargoRoutes, EventDispatcherInterface $dispatcher)
     {
-        $this->routes = $routes;
-        $dispatcher->addListener('kernel.request', array($this, 'onKernelRequest'));
+        $this->cargoRoutes = $cargoRoutes;
     }
 
     /**
@@ -48,50 +52,34 @@ class RequestAssertMatcher implements MatcherInterface
         if ($template->hasAnnotation('Cargo\Annotation\Route') && $template->hasAnnotation('Cargo\Annotation\RequestAssert')) {
             $routeAnnotation = $template->getAnnotation('Cargo\Annotation\Route');
             $assertAnnotation = $template->getAnnotation('Cargo\Annotation\RequestAssert');
+            $assertions = $assertAnnotation->getAssertions();
 
-            $r = $this->routes->get($routeAnnotation->getName());
-            $r->addOptions(array(
-                'request_assertions' => $assertAnnotation->getAssertions(),
-            ));
-        }
-    }
+            $route = $this->cargoRoutes->get($routeAnnotation->getName());
+            $route->setOption('request_assertions', $assertions);
+            $route->before(function ($request, $app) use ($assertions) {
+                foreach ($assertions as $key => $assertion) {
+                    if ($value = $request->get($key)) {
+                        $match = false;
 
-    /**
-     * Checks if the reuest matches the assertions of current route.
-     * If the route has assertions and does not match to the request attributes
-     * then an exceptoin will be thrown.
-     *
-     * @param GetResponseEvent $event The kernel request event
-     *
-     * @throws RuntimeException If the assertions does not match to the request attributes
-     */
-    public function onKernelRequest(GetResponseEvent $event)
-    {
-        $request = $event->getRequest();
-        $route   = $this->routes->get($request->get('_route'));
-        $options = $route->getOptions();
+                        if (strpos($assertion, '|')) {
+                            $assertion = explode('|', $assertion);
+                            if (in_array($value, $assertion)) {
+                                $match = true;
+                            }
+                        } else {
+                            if ($value == $assertion) {
+                                $match = true;
+                            }
+                        }
 
-        if (isset($options['request_assertions'])) {
-            foreach ($options['request_assertions'] as $key => $assertion) {
-                if ($value = $request->get($key)) {
-                    $match = false;
-
-                    if (strpos($assertion, '|')) {
-                        $assertion = explode('|', $assertion);
-                        if (in_array($value, $assertion)) {
-                            $match = true;
+                        if (false === $match) {
+                            throw new \RuntimeException('This request is not allowed to access this route.');
                         }
                     } else {
-                        if ($value == $assertion) {
-                            $match = true;
-                        }
-                    }
-
-                    if (false === $match) {
                         throw new \RuntimeException('This request is not allowed to access this route.');
                     }
                 }
-            }
+            });
         }
     }
 }

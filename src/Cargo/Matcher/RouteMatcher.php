@@ -11,8 +11,8 @@
 
 namespace Cargo\Matcher;
 
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Silex\Route;
 use Cargo\Template\TemplateInterface;
 
 /** 

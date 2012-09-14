@@ -57,7 +57,7 @@ class CargoServiceProvider implements ServiceProviderInterface
         $app['cargo.template.compiler'] = $app->share(function () use ($app) {
             return new TemplateCompiler(array(
                 new \Cargo\Matcher\RouteMatcher($app['cargo.routes']),
-                new \Cargo\Matcher\RequestAssertMatcher($app['cargo.routes'], $app['dispatcher']),
+                new \Cargo\Matcher\RequestAssertMatcher($app['routes'], $app['cargo.routes'], $app['dispatcher']),
                 new \Cargo\Matcher\TemplateMatcher(),
                 new \Cargo\Matcher\ErrorMatcher($app),
                 new \Cargo\Matcher\SecurityMatcher($app),
@@ -67,6 +67,7 @@ class CargoServiceProvider implements ServiceProviderInterface
         $app['cargo.cache_loader'] = $app->share(function () use ($app) {
             return new \Cargo\Cache\Loader($app['cargo.cache_dir'], $app['debug'], array(
                 new \Cargo\Cache\RouteCacheHandler($app),
+                new \Cargo\Cache\RequestAssertCacheHandler($app),
                 new \Cargo\Cache\TemplateCacheHandler($app),
                 new \Cargo\Cache\ErrorCacheHandler($app),
                 new \Cargo\Cache\SecurityCacheHandler($app),
@@ -103,7 +104,9 @@ class CargoServiceProvider implements ServiceProviderInterface
 
             $app->get($route->getPattern(), function () use ($app, $compiledRoute, $template) {
                 return $app['twig']->render($template->getName(), $compiledRoute->getVariables());
-            })->bind($name);
+            })
+            ->bind($name)
+            ->setOptions($route->getOptions());
         }
     }
 }
