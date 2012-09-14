@@ -14,6 +14,7 @@ namespace Cargo\Matcher;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Cargo\Template\TemplateInterface;
 
 /** 
