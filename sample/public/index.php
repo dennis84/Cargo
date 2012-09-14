@@ -5,7 +5,8 @@ ini_set('display_errors', 1);
 require_once __DIR__.'/../../vendor/autoload.php';
 
 $app = new \Silex\Application();
-$app['debug'] = false;
+$app['debug'] = true;
+$app['locale'] = 're';
 
 $app->register(new \Silex\Provider\TwigServiceProvider());
 

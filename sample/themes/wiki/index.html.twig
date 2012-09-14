@@ -2,6 +2,9 @@
 
 @Template("wiki_index")
 @Route("/wiki", name="wiki_index")
+@RequestAssert({
+  "_locale"="de|en"
+})
 
 #}
 <!doctype html>

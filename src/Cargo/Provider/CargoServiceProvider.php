@@ -57,6 +57,7 @@ class CargoServiceProvider implements ServiceProviderInterface
         $app['cargo.template.compiler'] = $app->share(function () use ($app) {
             return new TemplateCompiler(array(
                 new \Cargo\Matcher\RouteMatcher($app['cargo.routes']),
+                new \Cargo\Matcher\RequestAssertMatcher($app['cargo.routes'], $app['dispatcher']),
                 new \Cargo\Matcher\TemplateMatcher(),
                 new \Cargo\Matcher\ErrorMatcher($app),
                 new \Cargo\Matcher\SecurityMatcher($app),
